@@ -1,23 +1,28 @@
 package com.mindorks.bootcamp.learndagger.data.local
 
-import android.content.Context
+import androidx.room.Database
+import androidx.room.RoomDatabase
+import androidx.room.TypeConverter
+import androidx.room.TypeConverters
+import com.mindorks.bootcamp.learndagger.data.local.dao.AddressDao
+import com.mindorks.bootcamp.learndagger.data.local.dao.UserDao
+import com.mindorks.bootcamp.learndagger.data.local.entity.User
+import com.mindorks.bootcamp.learndagger.data.local.entity.UserAddress
 
-import com.mindorks.bootcamp.learndagger.di.ApplicationContext
-import com.mindorks.bootcamp.learndagger.di.DatabaseInfo
 
-import javax.inject.Inject
-import javax.inject.Singleton
+@Database(
+        entities = [
+            User::class,
+            UserAddress::class
+        ],
+        version = 2,
+        exportSchema = false
+)
 
-/**
- * Dummy class to simulate the actual Database using Room or Realm etc
- */
-@Singleton
-class DatabaseService @Inject constructor(
-        @ApplicationContext private val context: Context,
-        @DatabaseInfo private val databaseName: String,
-        @DatabaseInfo private val version: Int)// do the initialisation here
-{
+@TypeConverters(Convertor::class)
+abstract class DatabaseService : RoomDatabase(){
 
-    val dummyData: String
-        get() = "DATABASE_DUMMY_DATA"
+    abstract fun userDao(): UserDao
+
+    abstract fun addressDao(): AddressDao
 }
